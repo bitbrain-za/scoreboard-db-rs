@@ -49,22 +49,30 @@ impl Db {
 
     pub fn insert_score(
         &mut self,
-        name: &str,
-        command: &str,
-        time_ns: i32,
+        score: &Score,
     ) -> std::result::Result<(), Box<dyn std::error::Error>> {
-        let score: Score = Score::new(name, command, time_ns);
         let (statement, parameters) = score.as_insert();
         let statement = format!("INSERT INTO {} {}", self.table, statement);
         self.connection.exec_drop(statement, parameters)?;
         Ok(())
     }
 
-    pub fn get_scores(&mut self) -> std::result::Result<Vec<Score>, Box<dyn std::error::Error>> {
-        let query = format!(
-            "SELECT name, command, time_ns FROM {} ORDER BY time_ns ASC",
-            self.table
-        );
+    pub fn get_scores(
+        &mut self,
+        count: Option<usize>,
+        all: bool,
+    ) -> std::result::Result<Vec<Score>, Box<dyn std::error::Error>> {
+        let query = match all {
+            false => format!("SELECT name, command, MIN(time_ns) as min_time_ns FROM {} GROUP BY name, command ORDER BY min_time_ns ASC", self.table),
+            true => format!("SELECT name, command, time_ns FROM {} ORDER BY time_ns ASC", self.table), 
+        };
+
+        let query = if let Some(count) = count {
+            format!("{} LIMIT {}", query, count)
+        } else {
+            query
+        };
+
         let scores = self
             .connection
             .query_map(&query, |(name, command, time_ns)| Score {
@@ -96,12 +104,12 @@ mod tests {
         let mut db = Db::new("localhost", 3306, "code_challenge", &db_pass, "test").unwrap();
         db.clear_table().unwrap();
         db.create_table().unwrap();
-        db.insert_score("test", "echo", 1).unwrap();
-        let scores = db.get_scores().unwrap();
+        db.insert_score(&Score::new("test", "echo", 1.0)).unwrap();
+        let scores = db.get_scores(None, true).unwrap();
         assert_eq!(scores.len(), 1);
 
-        db.insert_score("test", "echo", 2).unwrap();
-        let scores = db.get_scores().unwrap();
+        db.insert_score(&Score::new("test", "echo", 2.0)).unwrap();
+        let scores = db.get_scores(None, true).unwrap();
         assert_eq!(scores.len(), 2);
         assert_eq!(scores[0].time_ns, 1);
         assert_eq!(scores[1].time_ns, 2);

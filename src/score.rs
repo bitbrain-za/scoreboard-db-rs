@@ -1,25 +1,22 @@
 use mysql::*;
 use std::fmt::Display;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug)]
 pub struct Score {
     pub name: String,
     pub command: String,
-    pub time_ns: i32,
+    pub time_ns: f64,
 }
 
 impl Display for Score {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{} ran {} in {}ns",
-            self.name, self.command, self.time_ns
-        )
+        let elapsed = self.time_ns / 1_000_000.0;
+        write!(f, "{} ran {} in {}ms", self.name, self.command, elapsed)
     }
 }
 
 impl Score {
-    pub fn new(name: &str, command: &str, time_ns: i32) -> Self {
+    pub fn new(name: &str, command: &str, time_ns: f64) -> Self {
         Score {
             name: name.to_string(),
             command: command.to_string(),
@@ -32,7 +29,7 @@ impl Score {
             id INT NOT NULL AUTO_INCREMENT,
             name TEXT NOT NULL,
             command TEXT NOT NULL,
-            time_ns INT NOT NULL,
+            time_ns DOUBLE NOT NULL,
             PRIMARY KEY (id)
         ",
         )
