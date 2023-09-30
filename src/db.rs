@@ -9,10 +9,14 @@ pub struct Db {
 
 impl Db {
     pub fn new(
+        host: &str,
+        port: u16,
+        db: &str,
         password: &str,
         table: &str,
     ) -> std::result::Result<Self, Box<dyn std::error::Error>> {
-        let conn = Self::create_connection(password, "localhost:3306/code_challenge")?;
+        let url = format!("{}:{}/{}", host, port, db);
+        let conn = Self::create_connection(password, &url)?;
 
         let mut me = Db {
             connection: conn,
@@ -88,7 +92,7 @@ mod tests {
     fn test_db() {
         let db_pass = env::var("DB_PASS").expect("$DB_PASS must be set");
 
-        let mut db = Db::new(&db_pass, "test").unwrap();
+        let mut db = Db::new("localhost", 3306, "code_challenge", &db_pass, "test").unwrap();
         db.clear_table().unwrap();
         db.create_table().unwrap();
         db.insert_score("test", "echo", 1).unwrap();
