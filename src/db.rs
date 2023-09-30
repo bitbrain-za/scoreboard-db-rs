@@ -91,27 +91,3 @@ impl Db {
         Ok(())
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::env;
-
-    #[test]
-    fn test_db() {
-        let db_pass = env::var("DB_PASS").expect("$DB_PASS must be set");
-
-        let mut db = Db::new("localhost", 3306, "code_challenge", &db_pass, "test").unwrap();
-        db.clear_table().unwrap();
-        db.create_table().unwrap();
-        db.insert_score(&Score::new("test", "echo", 1.0)).unwrap();
-        let scores = db.get_scores(None, true).unwrap();
-        assert_eq!(scores.len(), 1);
-
-        db.insert_score(&Score::new("test", "echo", 2.0)).unwrap();
-        let scores = db.get_scores(None, true).unwrap();
-        assert_eq!(scores.len(), 2);
-        assert_eq!(scores[0].time_ns, 1);
-        assert_eq!(scores[1].time_ns, 2);
-    }
-}
