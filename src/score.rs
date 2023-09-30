@@ -10,8 +10,13 @@ pub struct Score {
 
 impl Display for Score {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let elapsed = self.time_ns / 1_000_000.0;
-        write!(f, "{} ran {} in {}ms", self.name, self.command, elapsed)
+        write!(
+            f,
+            "{} ran {} in {:3}ms",
+            self.name,
+            self.command,
+            NiceTime::new(self.time_ns)
+        )
     }
 }
 
@@ -53,6 +58,30 @@ impl Score {
             "name" => &self.name,
             "command" => &self.command,
             "time_ns" => &self.time_ns,
+        }
+    }
+}
+
+pub struct NiceTime {
+    pub time_ns: f64,
+}
+
+impl NiceTime {
+    pub fn new(time_ns: f64) -> Self {
+        NiceTime { time_ns }
+    }
+}
+
+impl Display for NiceTime {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.time_ns < 1_000.0 {
+            write!(f, "{:3}ns", self.time_ns)
+        } else if self.time_ns < 1_000_000.0 {
+            write!(f, "{:3}us", self.time_ns / 1_000.0)
+        } else if self.time_ns < 1_000_000_000.0 {
+            write!(f, "{:3}ms", self.time_ns / 1_000_000.0)
+        } else {
+            write!(f, "{:3}s", self.time_ns / 1_000_000_000.0)
         }
     }
 }
