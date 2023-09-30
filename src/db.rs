@@ -1,4 +1,5 @@
 use crate::score::Score;
+use log::debug;
 use mysql::prelude::*;
 use mysql::*;
 
@@ -72,7 +73,7 @@ impl Db {
                 time_ns,
             })?;
 
-        println!("Scores: {:?}", scores);
+        debug!("Scores: {:?}", scores);
         Ok(scores)
     }
 
