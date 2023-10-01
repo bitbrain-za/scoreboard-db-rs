@@ -6,6 +6,7 @@ pub struct Score {
     pub name: String,
     pub command: String,
     pub time_ns: f64,
+    pub hash: String,
 }
 
 impl Display for Score {
@@ -21,11 +22,12 @@ impl Display for Score {
 }
 
 impl Score {
-    pub fn new(name: &str, command: &str, time_ns: f64) -> Self {
+    pub fn new(name: &str, command: &str, time_ns: f64, hash: String) -> Self {
         Score {
             name: name.to_string(),
             command: command.to_string(),
             time_ns,
+            hash,
         }
     }
     pub fn schema() -> String {
@@ -35,6 +37,7 @@ impl Score {
             name TEXT NOT NULL,
             command TEXT NOT NULL,
             time_ns DOUBLE NOT NULL,
+            hash TEXT NOT NULL,
             PRIMARY KEY (id)
         ",
         )
@@ -47,8 +50,8 @@ impl Score {
     fn statement(&self) -> String {
         String::from(
             r"
-            (name, command, time_ns)
-            VALUES (:name, :command, :time_ns)
+            (name, command, time_ns, hash)
+            VALUES (:name, :command, :time_ns, :hash)
         ",
         )
     }
@@ -58,6 +61,7 @@ impl Score {
             "name" => &self.name,
             "command" => &self.command,
             "time_ns" => &self.time_ns,
+            "hash" => &self.hash,
         }
     }
 }
