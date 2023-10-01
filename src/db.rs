@@ -86,6 +86,20 @@ impl Db {
         Ok(scores)
     }
 
+    pub fn filter_unique_players(
+        input: Vec<Score>,
+    ) -> std::result::Result<Vec<Score>, Box<dyn std::error::Error>> {
+        let mut scores = Vec::new();
+        let mut seen = Vec::new();
+        for score in input {
+            if !seen.contains(&score.name) {
+                seen.push(score.name.clone());
+                scores.push(score);
+            }
+        }
+        Ok(scores)
+    }
+
     pub fn clear_table(&mut self) -> std::result::Result<(), Box<dyn std::error::Error>> {
         let drop = format!("DROP TABLE IF EXISTS {}", self.table);
         self.connection.query_drop(drop.as_str())?;
