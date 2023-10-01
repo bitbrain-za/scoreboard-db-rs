@@ -1,7 +1,7 @@
 use mysql::*;
 use std::fmt::Display;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Score {
     pub name: String,
     pub command: String,
