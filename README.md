@@ -11,3 +11,18 @@ Located on port 3306
 export DB_PASS=<password>
 cargo test
 ```
+
+# Usage
+
+Your main interface is the scoreboard module and you should ise it thusly
+
+```rust
+use scoreboard::ScoreBoard;
+
+
+let mute scoreboard = Scoreboard::new(db: &mut Db);
+
+
+
+
+```
