@@ -66,7 +66,7 @@ impl Score {
             "command" => &self.command,
             "time_ns" => &self.time_ns,
             "hash" => &self.hash,
-            "language" => &self.hash,
+            "language" => &self.language,
         }
     }
 }
