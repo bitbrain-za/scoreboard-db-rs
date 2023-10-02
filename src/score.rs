@@ -7,27 +7,30 @@ pub struct Score {
     pub command: String,
     pub time_ns: f64,
     pub hash: String,
+    pub language: String,
 }
 
 impl Display for Score {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "{} ran {} in {}",
+            "{} ran {} ({}) in {}",
             self.name,
             self.command,
+            self.language,
             NiceTime::new(self.time_ns)
         )
     }
 }
 
 impl Score {
-    pub fn new(name: &str, command: &str, time_ns: f64, hash: String) -> Self {
+    pub fn new(name: &str, command: &str, time_ns: f64, hash: String, language: &str) -> Self {
         Score {
             name: name.to_string(),
             command: command.to_string(),
             time_ns,
             hash,
+            language: language.to_string(),
         }
     }
     pub fn schema() -> String {
@@ -38,6 +41,7 @@ impl Score {
             command TEXT NOT NULL,
             time_ns DOUBLE NOT NULL,
             hash TEXT NOT NULL,
+            language TEXT NOT NULL,
             PRIMARY KEY (id)
         ",
         )
@@ -50,8 +54,8 @@ impl Score {
     fn statement(&self) -> String {
         String::from(
             r"
-            (name, command, time_ns, hash)
-            VALUES (:name, :command, :time_ns, :hash)
+            (name, command, time_ns, hash, language)
+            VALUES (:name, :command, :time_ns, :hash, :language)
         ",
         )
     }
@@ -62,6 +66,7 @@ impl Score {
             "command" => &self.command,
             "time_ns" => &self.time_ns,
             "hash" => &self.hash,
+            "language" => &self.language,
         }
     }
 }
