@@ -76,9 +76,9 @@ mod tests {
     #[test]
     fn test_scoreboard() {
         let scores = vec![
-            Score::new("foo", "echo foo", 1.0, "hash".to_string()),
-            Score::new("bar", "echo bar", 2.0, "hash".to_string()),
-            Score::new("baz", "echo baz", 3.0, "hash".to_string()),
+            Score::new("foo", "echo foo", 1.0, "hash".to_string(), "c"),
+            Score::new("bar", "echo bar", 2.0, "hash".to_string(), "c"),
+            Score::new("baz", "echo baz", 3.0, "hash".to_string(), "c"),
         ];
         let scoreboard = ScoreBoard::new(scores);
         let filters = Builder::new()
@@ -92,9 +92,9 @@ mod tests {
     #[test]
     fn test_scoreboard_display() {
         let scores = vec![
-            Score::new("foo", "echo foo", 1.0, "hash".to_string()),
-            Score::new("bar", "echo bar", 2.0, "hash".to_string()),
-            Score::new("baz", "echo baz", 3.0, "hash".to_string()),
+            Score::new("foo", "echo foo", 1.0, "hash".to_string(), "c"),
+            Score::new("bar", "echo bar", 2.0, "hash".to_string(), "c"),
+            Score::new("baz", "echo baz", 3.0, "hash".to_string(), "c"),
         ];
         let scoreboard = ScoreBoard::new(scores);
         let filters = Builder::new()
@@ -108,9 +108,9 @@ mod tests {
     #[test]
     fn test_scoreboard_display_with_real_name() {
         let scores = vec![
-            Score::new("foo", "echo foo", 1.0, "hash".to_string()),
-            Score::new("bar", "echo bar", 2.0, "hash".to_string()),
-            Score::new("baz", "echo baz", 3.0, "hash".to_string()),
+            Score::new("foo", "echo foo", 1.0, "hash".to_string(), "c"),
+            Score::new("bar", "echo bar", 2.0, "hash".to_string(), "c"),
+            Score::new("baz", "echo baz", 3.0, "hash".to_string(), "c"),
         ];
         let scoreboard = ScoreBoard::new(scores);
         let filters = Builder::new()
