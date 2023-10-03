@@ -11,6 +11,12 @@ impl ScoreBoard {
         ScoreBoard { scores }
     }
 
+    pub fn filter(self, filters: filter::Builder) -> Self {
+        let filters = filters.build();
+        let scores = filters.apply(&self.scores);
+        ScoreBoard { scores }
+    }
+
     pub fn get(&self, filters: Option<&filter::Collection>) -> Vec<Score> {
         match filters {
             Some(filters) => filters.apply(&self.scores),
