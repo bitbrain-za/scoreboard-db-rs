@@ -17,6 +17,10 @@ impl ScoreBoard {
         ScoreBoard { scores }
     }
 
+    pub fn scores(&self) -> Vec<Score> {
+        self.scores.clone()
+    }
+
     pub fn get(&self, filters: Option<&filter::Collection>) -> Vec<Score> {
         match filters {
             Some(filters) => filters.apply(&self.scores),
