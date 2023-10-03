@@ -60,12 +60,11 @@ impl Db {
     pub fn get_scores(
         &mut self,
         count: Option<usize>,
-        all: bool,
     ) -> std::result::Result<Vec<Score>, Box<dyn std::error::Error>> {
-        let query = match all {
-            false => format!("SELECT language, hash, name, command, MIN(time_ns) as min_time_ns FROM {} GROUP BY language, hash, name, command ORDER BY min_time_ns ASC", self.table),
-            true => format!("SELECT language, hash, name, command, time_ns FROM {} ORDER BY time_ns ASC", self.table), 
-        };
+        let query = format!(
+            "SELECT language, hash, name, command, time_ns FROM {} ORDER BY time_ns ASC",
+            self.table
+        );
 
         let query = if let Some(count) = count {
             format!("{} LIMIT {}", query, count)

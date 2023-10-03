@@ -17,9 +17,15 @@ impl FromStr for SortColumn {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "player" => Ok(SortColumn::PlayerName),
+            "players" => Ok(SortColumn::PlayerName),
+            "name" => Ok(SortColumn::PlayerName),
+            "names" => Ok(SortColumn::PlayerName),
+            "binaries" => Ok(SortColumn::Binary),
             "binary" => Ok(SortColumn::Binary),
             "time" => Ok(SortColumn::Time),
+            "times" => Ok(SortColumn::Time),
             "language" => Ok(SortColumn::Time),
+            "languages" => Ok(SortColumn::Time),
             _ => Err(format!("invalid sort column: {}", s)),
         }
     }
