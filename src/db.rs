@@ -63,8 +63,8 @@ impl Db {
         all: bool,
     ) -> std::result::Result<Vec<Score>, Box<dyn std::error::Error>> {
         let query = match all {
-            false => format!("SELECT hash, name, command, MIN(time_ns) as min_time_ns FROM {} GROUP BY hash, name, command ORDER BY min_time_ns ASC", self.table),
-            true => format!("SELECT hash, name, command, time_ns FROM {} ORDER BY time_ns ASC", self.table), 
+            false => format!("SELECT language, hash, name, command, MIN(time_ns) as min_time_ns FROM {} GROUP BY language, hash, name, command ORDER BY min_time_ns ASC", self.table),
+            true => format!("SELECT language, hash, name, command, time_ns FROM {} ORDER BY time_ns ASC", self.table), 
         };
 
         let query = if let Some(count) = count {
@@ -73,14 +73,15 @@ impl Db {
             query
         };
 
-        let scores = self
-            .connection
-            .query_map(&query, |(hash, name, command, time_ns)| Score {
-                name,
-                command,
-                time_ns,
-                hash,
-            })?;
+        let scores =
+            self.connection
+                .query_map(&query, |(language, hash, name, command, time_ns)| Score {
+                    name,
+                    command,
+                    time_ns,
+                    hash,
+                    language,
+                })?;
 
         debug!("Scores: {:?}", scores);
         Ok(scores)
