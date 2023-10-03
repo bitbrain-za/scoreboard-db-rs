@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::score::Score;
 use log::trace;
 
@@ -5,7 +7,22 @@ use log::trace;
 pub enum SortColumn {
     PlayerName,
     Binary,
+    Language,
     Time,
+}
+
+impl FromStr for SortColumn {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "player" => Ok(SortColumn::PlayerName),
+            "binary" => Ok(SortColumn::Binary),
+            "time" => Ok(SortColumn::Time),
+            "language" => Ok(SortColumn::Time),
+            _ => Err(format!("invalid sort column: {}", s)),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -202,6 +219,7 @@ impl Collection {
         match column {
             SortColumn::PlayerName => scores.sort_by(|a, b| a.name.cmp(&b.name)),
             SortColumn::Binary => scores.sort_by(|a, b| a.command.cmp(&b.command)),
+            SortColumn::Language => scores.sort_by(|a, b| a.language.cmp(&b.language)),
             SortColumn::Time => scores.sort_by(|a, b| a.time_ns.partial_cmp(&b.time_ns).unwrap()),
         }
         scores
