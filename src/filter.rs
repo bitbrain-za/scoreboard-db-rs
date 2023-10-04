@@ -24,8 +24,8 @@ impl FromStr for SortColumn {
             "binary" => Ok(SortColumn::Binary),
             "time" => Ok(SortColumn::Time),
             "times" => Ok(SortColumn::Time),
-            "language" => Ok(SortColumn::Time),
-            "languages" => Ok(SortColumn::Time),
+            "language" => Ok(SortColumn::Language),
+            "languages" => Ok(SortColumn::Language),
             _ => Err(format!("invalid sort column: {}", s)),
         }
     }
