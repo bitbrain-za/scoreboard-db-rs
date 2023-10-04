@@ -180,21 +180,45 @@ impl Collection {
     fn apply_unique_players(scores: &[Score]) -> Vec<Score> {
         trace!("applying unique players filter");
         let mut scores = scores.to_vec();
-        scores.dedup_by(|a, b| a.name == b.name);
+        let mut seen = Vec::new();
+        scores.retain(|s| {
+            if seen.contains(&s.name) {
+                false
+            } else {
+                seen.push(s.name.clone());
+                true
+            }
+        });
         scores
     }
 
     fn apply_unique_binaries(scores: &[Score]) -> Vec<Score> {
         trace!("applying unique binaries filter");
         let mut scores = scores.to_vec();
-        scores.dedup_by(|a, b| a.command == b.command);
+        let mut seen = Vec::new();
+        scores.retain(|s| {
+            if seen.contains(&s.command) {
+                false
+            } else {
+                seen.push(s.command.clone());
+                true
+            }
+        });
         scores
     }
 
     fn apply_unique_languages(scores: &[Score]) -> Vec<Score> {
         trace!("applying unique language filter");
         let mut scores = scores.to_vec();
-        scores.dedup_by(|a, b| a.command == b.command);
+        let mut seen = Vec::new();
+        scores.retain(|s| {
+            if seen.contains(&s.language) {
+                false
+            } else {
+                seen.push(s.language.clone());
+                true
+            }
+        });
         scores
     }
 
