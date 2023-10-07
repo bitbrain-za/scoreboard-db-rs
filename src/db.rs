@@ -1,5 +1,5 @@
 use crate::score::Score;
-use log::debug;
+use log::trace;
 use mysql::prelude::*;
 use mysql::*;
 
