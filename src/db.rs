@@ -82,7 +82,7 @@ impl Db {
                     language,
                 })?;
 
-        debug!("Scores: {:?}", scores);
+        trace!("Scores: {:?}", scores);
         Ok(scores)
     }
 
