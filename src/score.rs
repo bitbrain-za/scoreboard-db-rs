@@ -1,3 +1,4 @@
+#[cfg(feature = "database")]
 use mysql::*;
 use std::fmt::Display;
 
@@ -48,10 +49,12 @@ impl Score {
         )
     }
 
+    #[cfg(feature = "database")]
     pub fn as_insert(&self) -> (String, Params) {
         (self.statement(), self.parameters())
     }
 
+    #[cfg(feature = "database")]
     fn statement(&self) -> String {
         String::from(
             r"
@@ -61,6 +64,7 @@ impl Score {
         )
     }
 
+    #[cfg(feature = "database")]
     fn parameters(&self) -> Params {
         params! {
             "name" => &self.name,
