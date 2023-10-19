@@ -1,11 +1,12 @@
 use mysql::*;
 use std::fmt::Display;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize)]
 pub struct Score {
     pub name: String,
     pub command: String,
     pub time_ns: f64,
+    #[serde(skip)]
     pub hash: String,
     pub language: String,
 }
