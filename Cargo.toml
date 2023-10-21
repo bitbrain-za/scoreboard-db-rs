@@ -2,8 +2,12 @@
 name = "scoreboard_db"
 version = "0.2.1"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Philip Barlow"]
+description = "Library that provides a database connection for the scoreboard for an in house code challenge server"
+license = "MIT"
+repository = "https://github.com/bitbrain-za/scoreboard-db-rs"
+homepage = "https://github.com/bitbrain-za/scoreboard-db-rs"
+readme = "README.md"
 
 [dependencies]
 mysql = { version = "24.0.0", optional = true }
