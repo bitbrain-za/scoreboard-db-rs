@@ -2,7 +2,7 @@
 use mysql::*;
 use std::fmt::Display;
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Score {
     pub name: String,
     pub command: String,
